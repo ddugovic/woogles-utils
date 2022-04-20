@@ -1,5 +1,3 @@
-# Meg Risdal 2022-04-13
-# https://www.kaggle.com/code/mrisdal/fetch-scrabble-data-from-woogles-io/notebook
 import requests
 import json
 from utils import plural

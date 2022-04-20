@@ -1,5 +1,3 @@
-# Meg Risdal 2022-04-20
-# https://www.kaggle.com/code/mrisdal/fetch-scrabble-data-from-woogles-io/notebook
 from api import *
 
 # get play data from a game id
