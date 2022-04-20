@@ -9,7 +9,7 @@ game_ids = []
 for game in fetch_recent('HastyBot', 1):
     game_ids.append(game['game_id'])
     
-with open("turns.csv", "w+", newline = "") as t:
+with open("data/turns.csv", "w+", newline = "") as t:
 
     t.write("game_id,turn_number,nickname,rack,location,move,points,score,turn_type\n")
 

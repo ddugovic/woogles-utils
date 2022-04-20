@@ -44,7 +44,7 @@ def fetch_recent(username, num):
         else:
             break
 
-    with open('woogles.json', 'w') as output_file:
+    with open('data/woogles.json', 'w') as output_file:
         json.dump(result, output_file)
         count = offset + game_count
         print("Finished downloading game metadata (%d %s)." % (count, plural('game', count)))
