@@ -1,8 +1,8 @@
 # Meg Risdal 2022-04-13
 # https://www.kaggle.com/code/mrisdal/fetch-scrabble-data-from-woogles-io/notebook
-import inflect
 import requests
 import json
+from utils import plural
 
 HEADERS = {
     'authority': 'woogles.io',
@@ -30,9 +30,8 @@ def fetch_recent(username, num):
 
     result = list()
 
-    engine = inflect.engine()
 
-    print("Downloading %d %s..." % (num, engine.plural('game', num)))
+    print("Downloading %d %s..." % (num, plural('game', num)))
     step = 20
     for offset in range(0, num, step):
         size = min(step, num - offset)
@@ -48,6 +47,6 @@ def fetch_recent(username, num):
     with open('woogles.json', 'w') as output_file:
         json.dump(result, output_file)
         count = offset + game_count
-        print("Finished downloading game metadata (%d %s)." % (count, engine.plural('game', count)))
+        print("Finished downloading game metadata (%d %s)." % (count, plural('game', count)))
 
     return result
