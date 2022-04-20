@@ -1,4 +1,4 @@
-def parse_turn(line):
+def parse_turn(line, game_id, turn_number):
     turn = line.strip(">").split(" ")
 
     if turn[2] == "-":
@@ -19,4 +19,12 @@ def parse_turn(line):
         turn.insert(6, "End")
     else:
         turn.insert(6, "Play")
+    
+    turn.insert(0, game_id)
+    turn.insert(1, str(turn_number))
+    turn[2] = turn[2].strip(":")
+    
+    if(len(turn) != 9):
+        print(turn)
+        raise ValueError("Incorrect number of turn columns.")
     return turn

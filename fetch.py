@@ -1,40 +1,42 @@
 from api import *
 from game import *
 from utils import plural
-
-# get play data from a game id
-
-game_ids = []
-
-for game in fetch_recent('BasicBot', 1):
-    game_ids.append(game['game_id'])
     
-with open("data/turns.csv", "w+", newline = "") as t:
-
-    t.write("game_id,turn_number,nickname,rack,location,move,points,score,turn_type\n")
-
-    for game_id in game_ids:
-        plays = fetch_gcg(game_id)
-
-        print("Parsing game %s..." % game_id)
+def fetch(username, num):
+    # get play data from a game id
+    
+    games = {}
+    
+    for game in fetch_recent(username, num):
+        games[game['game_id']] = game
         
-        gcg = plays['gcg']
+    with open("data/turns.csv", "w+", newline = "") as t:
+    
+        t.write("game_id,turn_number,nickname,rack,location,move,points,score,turn_type\n")
+    
+        for game_id in games:
+            players = games[game_id]['players']
+            player1, player2 = players[0], players[1]
+            if bool(player2['first']):
+                player1, player2 = player2, player1
 
-        turn_number = 0
-        
-        for line in gcg.splitlines():
-            if not line.startswith("#"):
-                turn_number += 1
-                turn = parse_turn(line)
+            plays = fetch_gcg(game_id)
 
-                turn.insert(0, game_id)
-                turn.insert(1, str(turn_number))
-                turn[2] = turn[2].strip(":")
+            print("Parsing game %s (%s - %s)..." % (game_id, player1['nickname'], player2['nickname']), end = ' ')
+    
+            gcg = plays['gcg']
+    
+            turn_number = 0
+            
+            for line in gcg.splitlines():
+                if not line.startswith("#"):
+                    turn_number += 1
+                    turn = parse_turn(line, game_id, turn_number)
+                    
+                    t.write(",".join(turn) + "\n")
+    
+            print("%d %s." % (turn_number, plural('turn', turn_number)))
 
-                if(len(turn) != 9):
-                    print(turn)
-                    raise ValueError("Incorrect number of turn columns.")
-                
-                t.write(",".join(turn) + "\n")
 
-        print("Parsed game %s (%d %s)..." % (game_id, turn_number, plural('turn', turn_number)))
+if __name__ == '__main__':
+    fetch('BasicBot', 1)

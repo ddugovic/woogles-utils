@@ -28,7 +28,7 @@ def fetch_recent(username, num):
 
     result = list()
 
-    print("Downloading %d %s..." % (num, plural('game', num)))
+    print("Downloading %d %s..." % (num, plural('game', num)), end=' ')
     step = 20
     for offset in range(0, num, step):
         size = min(step, num - offset)
@@ -40,10 +40,10 @@ def fetch_recent(username, num):
             result.extend(games['game_info'])
         else:
             break
+    count = offset + game_count
 
     with open('data/woogles.json', 'w') as output_file:
         json.dump(result, output_file)
-        count = offset + game_count
-        print("Finished downloading game metadata (%d %s)." % (count, plural('game', count)))
+    print("done (%d %s downloaded)." % (count, plural('game', count)))
 
     return result
