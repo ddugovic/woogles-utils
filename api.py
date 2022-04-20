@@ -28,7 +28,6 @@ def fetch_recent(username, num):
 
     result = list()
 
-
     print("Downloading %d %s..." % (num, plural('game', num)))
     step = 20
     for offset in range(0, num, step):
