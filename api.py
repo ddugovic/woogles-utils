@@ -1,6 +1,5 @@
 import requests
 import json
-from utils import plural
 
 HEADERS = {
     'authority': 'woogles.io',
@@ -18,7 +17,6 @@ RECENT_URL = 'https://woogles.io/twirp/game_service.GameMetadataService/GetRecen
 def fetch_gcg(game_id):
     params = '{"gameId":"%s"}'
 
-    print("Downloading game %s..." % game_id)
     game_response = requests.post(GCG_URL, headers = HEADERS, data = (params % game_id))
 
     return json.loads(game_response.text)
@@ -28,7 +26,6 @@ def fetch_recent(username, num):
 
     result = list()
 
-    print("Downloading %d %s..." % (num, plural('game', num)), end=' ')
     step = 20
     for offset in range(0, num, step):
         size = min(step, num - offset)
@@ -44,6 +41,5 @@ def fetch_recent(username, num):
 
     with open('data/woogles.json', 'w') as output_file:
         json.dump(result, output_file)
-    print("done (%d %s downloaded)." % (count, plural('game', count)))
 
-    return result
+    return count, result
