@@ -1,2 +1,2 @@
 inflect~=7.2.1
-requests~=2.32.1
+requests~=2.32.2
